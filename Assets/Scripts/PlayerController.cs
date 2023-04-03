@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum Direction
@@ -11,14 +10,14 @@ public class PlayerController : MonoBehaviour
 {
     public float speed;
     private Dictionary<Direction, bool> borderFlags = new();
-    private Animator animator;
+    private Animator anim;
 
     private void Start()
     {
         Direction count = Direction.Count;
         for (Direction i = 0; i < count; i++)
             borderFlags[i] = false;
-        animator = GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -30,7 +29,7 @@ public class PlayerController : MonoBehaviour
         v = borderFlags[Direction.Bottom] && v < 0 || borderFlags[Direction.Top] && v > 0 ? 0 : v;
 
         Vector2 nextPos = speed * Time.deltaTime * new Vector2(h, v);
-        animator.SetInteger("Input", (int)h);
+        anim.SetInteger("Input", (int)h);
         transform.Translate(nextPos);
     }
 
