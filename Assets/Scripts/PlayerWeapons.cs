@@ -5,18 +5,32 @@ public class PlayerWeapons : MonoBehaviour
 {
     public Transform mainWeaponPos;
     public Transform[] subWeaponPos;
-    public List<GameObject> bullets;
+    [SerializeField]
+    private List<GameObject> bullets;
+    private GameManager gm;
+
+    private void Start()
+    {
+        gm = GameManager.Instance;
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Instantiate(bullets[0], mainWeaponPos.position, Quaternion.identity);
+            string mainWeaponName = bullets[0].name;
+            GameObject bulletObj = gm.bullets[mainWeaponName].Get();
+            bulletObj.transform.position = mainWeaponPos.position;
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Instantiate(bullets[1], subWeaponPos[0].position, Quaternion.identity);
-            Instantiate(bullets[1], subWeaponPos[1].position, Quaternion.identity);
+            int count = subWeaponPos.Length;
+            for (int i = 0; i < count; i++)
+            {
+                string subWeaponName = bullets[1].name;
+                GameObject bulletObj = gm.GetBullet(subWeaponName);
+                bulletObj.transform.position = subWeaponPos[i].position;
+            }
         }
     }
 }

@@ -10,24 +10,11 @@ public class CSVReader
     static readonly string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     static readonly char[] TRIM_CHARS = { '\"' };
 
-    // New2. Split Text Asset
-    public static List<Dictionary<string, object>> SplitTextAsset(TextAsset asset, bool splitComma = true, bool tryParse = true)
-    {
-        return SplitTokens(asset.text, splitComma, tryParse);
-    }
-
     // New1. Use File Path
     public static List<Dictionary<string, object>> ReadByPath(string path, bool splitComma = true)
     {
         string str = File.ReadAllText(path);
         return SplitTokens(str, splitComma);
-    }
-    public static List<Dictionary<string, object>> ReadByStreamReaderPath(string path, bool splitComma = true, bool tryParse = true)
-    {
-        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-        using var reader = new StreamReader(stream);
-        string str = reader.ReadToEnd();
-        return SplitTokens(str, splitComma, tryParse);
     }
 
     // Legacy. Use Resource folder
@@ -37,7 +24,7 @@ public class CSVReader
         return SplitTokens(data.text, splitComma);
     }
 
-    private static List<Dictionary<string, object>> SplitTokens(string data, bool splitComma = true, bool tryParse = true)
+    private static List<Dictionary<string, object>> SplitTokens(string data, bool splitComma = true)
     {
         var list = new List<Dictionary<string, object>>();
         var lines = Regex.Split(data, LINE_SPLIT_RE);
@@ -55,7 +42,6 @@ public class CSVReader
                 string value = values[j];
                 value = value.TrimStart(TRIM_CHARS).TrimEnd(TRIM_CHARS).Replace("\\", "");
                 object finalvalue = value;
-                if (tryParse)
                 {
                     if (int.TryParse(value, out int n))
                     {
