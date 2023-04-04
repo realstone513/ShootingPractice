@@ -19,7 +19,7 @@ public class PlayerWeapons : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Z))
         {
             string mainWeaponName = bullets[0].name;
-            GameObject bulletObj = gm.bullets[mainWeaponName].Get();
+            GameObject bulletObj = gm.GetBullet(mainWeaponName);
             bulletObj.transform.position = mainWeaponPos.position;
         }
         if (Input.GetKeyDown(KeyCode.X))

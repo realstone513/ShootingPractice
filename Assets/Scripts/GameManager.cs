@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -9,11 +8,11 @@ public class GameManager : Singleton<GameManager>
     public float backgroundSize;
     public float platformSpeed;
 
-    [Header("Bullets")]
+    [Header("Bullet Object Pool")]
     [SerializeField]
     private List<GameObject> bulletTypes;
-    public Dictionary<string, IObjectPool<GameObject>> bullets = new ();
-    private GameObject curBulletObject;
+    public Dictionary<string, CustomObjectPool> bullets = new ();
+    public int poolLimitCount = 20;
 
     public Transform bulletsTransform;
 
@@ -23,40 +22,21 @@ public class GameManager : Singleton<GameManager>
         int count = bulletTypes.Count;
         for (int i = 0; i < count; i++)
         {
-            curBulletObject = bulletTypes[i];
-            Bullet bullet = bulletTypes[i].GetComponent<Bullet>();
-            string bulletPoolName = $"{curBulletObject.name} Pool";
-            ObjectPool<GameObject> objPool = new (OnCreate, OnGet, OnRelease, OnPoolObjDestroy, maxSize: 20);
-            bullets[curBulletObject.name] = objPool;
+            GameObject spawnObj = new (bulletTypes[i].name);
+            Transform spawnTransform = Instantiate(spawnObj, bulletsTransform).transform;
+            bullets[bulletTypes[i].name] = new (poolLimitCount, bulletTypes[i], spawnTransform);
         }
+        bulletTypes.Clear();
     }
 
     public GameObject GetBullet(string name)
     {
-        curBulletObject = bulletTypes.Find(x => x.name.Equals(name));
-        return bullets[name].Get();
+        return bullets[name].GetObject();
     }
 
-    private GameObject OnCreate()
+    public void ReleaseBullet(GameObject bullet)
     {
-        GameObject bulletObj = Instantiate(curBulletObject, bulletsTransform);
-        bulletObj.GetComponent<Bullet>().SetPool(bullets[curBulletObject.name]);
-        return bulletObj;
-    }
-
-    private void OnGet(GameObject bullet)
-    {
-        bullet.SetActive(true);
-    }
-
-    private void OnRelease(GameObject bullet)
-    {
-        bullet.SetActive(false);
-    }
-
-    private void OnPoolObjDestroy(GameObject bullet)
-    {
-        Destroy(bullet);
+        bullets[bullet.name].ReleaseObject(bullet);
     }
 
     private void Update()

@@ -1,31 +1,37 @@
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class Bullet : MonoBehaviour
 {
     public float bulletSpeed;
     public float damage;
     public Vector2 direction;
-    private IObjectPool<GameObject> bulletPool;
+    private float lifeTime = 5f;
+    private float duration = 0f;
+    public int id = 0;
 
     private void Start()
     {
         direction = direction.normalized;
     }
 
+    private void OnEnable()
+    {
+        duration = 0f;
+    }
+
     private void Update()
     {
         gameObject.transform.Translate(bulletSpeed * Time.deltaTime * direction);
-    }
-
-    public void SetPool(IObjectPool<GameObject> pool)
-    {
-        bulletPool = pool;
+        duration += Time.deltaTime;
+        if (duration > lifeTime)
+        {
+            Release();
+        }
     }
 
     private void Release()
     {
-        bulletPool.Release(gameObject);
+        GameManager.Instance.ReleaseBullet(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
