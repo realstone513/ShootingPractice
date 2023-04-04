@@ -5,9 +5,8 @@ public class Bullet : MonoBehaviour
     public float bulletSpeed;
     public float damage;
     public Vector2 direction;
-    private float lifeTime = 5f;
+    private readonly float lifeTime = 5f;
     private float duration = 0f;
-    public int id = 0;
 
     private void Start()
     {
@@ -45,7 +44,6 @@ public class Bullet : MonoBehaviour
         {
             if (collision.CompareTag("Enemy"))
             {
-                //Debug.Log($"{collision.name} hit {damage}");
                 aircraft.GetDamage(damage);
                 Release();
             }
@@ -54,7 +52,6 @@ public class Bullet : MonoBehaviour
         {
             if (collision.CompareTag("Player"))
             {
-                //Debug.Log($"{collision.name} hit {damage}");
                 aircraft.GetDamage(damage);
                 Release();
             }

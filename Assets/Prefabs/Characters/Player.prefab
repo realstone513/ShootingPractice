@@ -54,6 +54,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 100
+  curHp: 0
+  hpBar: {fileID: 0}
 --- !u!114 &1637640584
 MonoBehaviour:
   m_ObjectHideFlags: 0
