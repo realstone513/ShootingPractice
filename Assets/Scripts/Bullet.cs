@@ -40,11 +40,13 @@ public class Bullet : MonoBehaviour
         if (CompareTag("EnemyBullet"))
             isPlayerBullet = false;
 
+        Aircraft aircraft = collision.GetComponent<Aircraft>();
         if (isPlayerBullet)
         {
             if (collision.CompareTag("Enemy"))
             {
-                Debug.Log($"{collision.name} hit {damage}");
+                //Debug.Log($"{collision.name} hit {damage}");
+                aircraft.GetDamage(damage);
                 Release();
             }
         }
@@ -52,7 +54,8 @@ public class Bullet : MonoBehaviour
         {
             if (collision.CompareTag("Player"))
             {
-                Debug.Log($"{collision.name} hit {damage}");
+                //Debug.Log($"{collision.name} hit {damage}");
+                aircraft.GetDamage(damage);
                 Release();
             }
         }

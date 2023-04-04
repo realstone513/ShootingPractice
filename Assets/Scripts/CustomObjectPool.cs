@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CustomObjectPool
+public class CustomObjectPool : Object
 {
     public List<GameObject> useQueue;
     public List<GameObject> unuseQueue;
@@ -28,14 +28,14 @@ public class CustomObjectPool
         GameObject target;
         if (Count < limit)
         {
-            target = Object.Instantiate(spawnPrefab, spawnTransform);
+            target = Instantiate(spawnPrefab, spawnTransform);
             target.name = spawnPrefab.name;
         }
         else
         {
             if (unuseQueue.Count == 0)
             {
-                target = Object.Instantiate(spawnPrefab, spawnTransform);
+                target = Instantiate(spawnPrefab, spawnTransform);
                 target.name = spawnPrefab.name;
             }
             else
@@ -53,7 +53,7 @@ public class CustomObjectPool
     {
         useQueue.Remove(obj);
         if (Count > limit)
-            Object.Destroy(obj);
+            Destroy(obj);
         else
         {
             unuseQueue.Add(obj);
