@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class PlatformManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
+    [Header("Platform Setting")]
     public GameObject[] backgrounds;
     public float backgroundSize;
     public float platformSpeed;

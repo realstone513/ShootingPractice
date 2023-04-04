@@ -3,10 +3,12 @@ using UnityEngine;
 public class BaseBullet : MonoBehaviour
 {
     public float bulletSpeed;
+    public float damage;
+    public float holdingTime = 5f;
 
     private void Start()
     {
-        Destroy(gameObject, 5f);
+        Destroy(gameObject, holdingTime);
     }
 
     private void Update()
