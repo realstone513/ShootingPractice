@@ -10,9 +10,13 @@ public class Aircraft : MonoBehaviour
 
     private void Awake()
     {
-        curHp = healthPoint;
         anim = GetComponent<Animator>();
         inverseHP = 1f / healthPoint;
+    }
+
+    private void OnEnable()
+    {
+        SetFullHP();
     }
 
     public void GetDamage(float Damage)
@@ -23,8 +27,15 @@ public class Aircraft : MonoBehaviour
             hpBar.SetFill(curHp * inverseHP);
         if (curHp < 0f)
         {
-            Debug.Log($"{name} destroy");
-            Destroy(gameObject);
+            if (gameObject.CompareTag("Enemy"))
+                GameManager.Instance.DestroyAircraft(gameObject);
+            else if (gameObject.CompareTag("Player"))
+                Debug.Log("Player Die");
         }
+    }
+
+    private void SetFullHP()
+    {
+        curHp = healthPoint;
     }
 }

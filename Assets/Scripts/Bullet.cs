@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
         Aircraft aircraft = collision.GetComponent<Aircraft>();
         if (isPlayerBullet)
         {
-            if (collision.CompareTag("Enemy"))
+            if (collision.CompareTag("Enemy") || collision.CompareTag("Boss"))
             {
                 aircraft.GetDamage(damage);
                 Release();

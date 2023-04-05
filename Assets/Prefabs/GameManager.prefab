@@ -79,8 +79,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   boss: {fileID: 0}
-  isPlaying: 0
+  enemyPrefabs:
+  - {fileID: 4639999765489157535, guid: 9a3ff7e92bc5f3e45aa06b229328a475, type: 3}
+  - {fileID: 7282273567296621217, guid: 9c7a95adf77bf6449ba2332c84d5dbd2, type: 3}
+  - {fileID: 626288673882707071, guid: 66404ae0df7b48442a48b2632f56a3dd, type: 3}
   readyText: {fileID: 0}
+  spawnPositions:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   backgrounds:
   - {fileID: 1334337345835185706}
   - {fileID: 5790866388484202795}
