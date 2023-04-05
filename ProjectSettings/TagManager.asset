@@ -6,8 +6,6 @@ TagManager:
   tags:
   - Border
   - Enemy
-  - PlayerBullet
-  - EnemyBullet
   - Boss
   layers:
   - Default

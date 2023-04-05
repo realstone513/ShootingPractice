@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 7094306557745462129}
   - component: {fileID: 3746020232607892760}
   m_Layer: 0
-  m_Name: Enemy Bullet Boss
-  m_TagString: Untagged
+  m_Name: Enemy Bullet Huge
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6959315781886169545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 1.16, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletSpeed: 5
   damage: 1
-  direction: {x: 0, y: 1}
+  direction: {x: 0, y: -1}
 --- !u!61 &7094306557745462129
 BoxCollider2D:
   m_ObjectHideFlags: 0

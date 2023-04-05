@@ -1,24 +1,56 @@
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, IMainWeapon
 {
-    public Vector2 direction = Vector2.down;
-    public float speed = 3f;
-    public List<GameObject> weapons;
+    public Vector2 moveDirection = Vector2.down;
+    public float moveSpeed = 3f;
+    [SerializeField]
+    private Weapon mainWeapon;
+    [SerializeField]
+    private Transform mainShootTransform;
+    private float mainWeaponDelayTimer;
 
-    private void Update()
+    public Weapon MainWeapon { get => mainWeapon; set => mainWeapon = value; }
+    public Transform MainShootTransform { get => mainShootTransform; set => mainShootTransform = value; }
+    public float MainWeaponDelayTimer { get => mainWeaponDelayTimer; set => mainWeaponDelayTimer = value; }
+
+    protected GameManager gm;
+
+    protected virtual void Start()
     {
-        if (gameObject.CompareTag("Enemy"))
-            gameObject.transform.Translate(speed * Time.deltaTime * direction);
+        gm = GameManager.Instance;
+        if (mainWeapon != null)
+            mainWeapon.Init();
+        mainWeaponDelayTimer = mainWeapon.reloadDelay;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void Update()
+    {
+        ShootMainWeapon();
+        if (gameObject.CompareTag("Enemy"))
+            gameObject.transform.Translate(moveSpeed * Time.deltaTime * moveDirection);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Border") && collision.name.Equals("Bottom"))
         {
-            Debug.Log(collision.name);
-            GameManager.Instance.DestroyAircraft(gameObject);
+            gm.DestroyEnemyAircraft(gameObject);
+        }
+    }
+
+    public void ShootMainWeapon()
+    {
+        if (mainWeapon == null)
+            return;
+
+        mainWeaponDelayTimer += Time.deltaTime;
+        if (mainWeaponDelayTimer > mainWeapon.reloadDelay)
+        {
+            mainWeaponDelayTimer = 0f;
+            string mainWeaponName = mainWeapon.bulletPrefab.name;
+            GameObject bulletObj = gm.GetBullet(mainWeaponName);
+            bulletObj.transform.position = mainShootTransform.position;
         }
     }
 }

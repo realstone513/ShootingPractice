@@ -7,10 +7,28 @@ public class Bullet : MonoBehaviour
     public Vector2 direction;
     private readonly float lifeTime = 5f;
     private float duration = 0f;
+    private bool isGuidedMissile = false;
+    private GameObject target;
 
     private void Start()
     {
         direction = direction.normalized;
+    }
+
+    public void SetFromWeaponSetting(float bulletSpeed, float damage, Vector2 direction, bool isGuidedMissile = false)
+    {
+        Debug.Log($"{gameObject.name} {bulletSpeed} {damage} {direction}");
+        this.bulletSpeed = bulletSpeed;
+        this.damage = damage;
+        if (!isGuidedMissile)
+            this.direction = direction.normalized;
+        else
+        {
+            if (gameObject.CompareTag("Enemy"))
+
+            target = GameManager.Instance.player;
+        }
+        this.isGuidedMissile = isGuidedMissile;
     }
 
     private void OnEnable()
@@ -36,7 +54,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         bool isPlayerBullet = true;
-        if (CompareTag("EnemyBullet"))
+        if (CompareTag("Enemy"))
             isPlayerBullet = false;
 
         Aircraft aircraft = collision.GetComponent<Aircraft>();

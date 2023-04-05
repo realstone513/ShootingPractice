@@ -9,8 +9,9 @@ public class GameManager : Singleton<GameManager>
     [Header("Game Setting")]
     public GameObject player;
     public GameObject boss;
-    public GameObject bossHPBar;
+    public List<GameObject> bossPrefabs;
     public List<GameObject> enemyPrefabs;
+    public GameObject bossHPBar;
     public GameObject readyText;
     private List<GameObject> liveEnemyAircrafts = new ();
     private bool isPlaying = false;
@@ -101,9 +102,11 @@ public class GameManager : Singleton<GameManager>
         for (int i = 0; i < count; i++)
             Destroy(liveEnemyAircrafts[i]);
         liveEnemyAircrafts.Clear();
-        boss.SetActive(false);
         bossHPBar.SetActive(false);
-        boss.transform.position = bossWaitPos;
+        if (boss != null)
+        {
+            Destroy(boss);
+        }
         player.SetActive(true);
         readyText.SetActive(false);
         StartCoroutine(CoStartGame());
@@ -150,12 +153,23 @@ public class GameManager : Singleton<GameManager>
                         break;
                 }
             }
-            Debug.Log($"wave {i}, arrange {waveData.arrange} interval {waveData.interval}");
+            //Debug.Log($"wave {i}, arrange {waveData.arrange} interval {waveData.interval}");
             yield return new WaitForSeconds(waveData.interval);
         }
 
-        Debug.Log("Boss");
+        //Debug.Log("Boss");
+        WaveData bossWave = stageDatas[currentStageIndex][0];
+        char bossID = bossWave.arrange[0];
+        switch (bossID)
+        {
+            case 'A':
+                boss = Instantiate(bossPrefabs[0], bossWaitPos, Quaternion.identity, spawnPositions[spawnPositions.Count / 2]); // Center
+                break;
+            default: 
+                break;
+        }
         boss.SetActive(true);
+        boss.GetComponent<Aircraft>().hpBar = bossHPBar.GetComponent<HpBar>();
         bossHPBar.SetActive(true);
     }
 
@@ -167,7 +181,7 @@ public class GameManager : Singleton<GameManager>
         isPlaying = false;
     }
 
-    public void DestroyAircraft(GameObject gameObject)
+    public void DestroyEnemyAircraft(GameObject gameObject, bool playerKill = false)
     {
         liveEnemyAircrafts.Remove(gameObject);
         Destroy(gameObject);

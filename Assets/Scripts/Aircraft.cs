@@ -28,7 +28,7 @@ public class Aircraft : MonoBehaviour
         if (curHp < 0f)
         {
             if (gameObject.CompareTag("Enemy"))
-                GameManager.Instance.DestroyAircraft(gameObject);
+                GameManager.Instance.DestroyEnemyAircraft(gameObject, true);
             else if (gameObject.CompareTag("Player"))
                 Debug.Log("Player Die");
         }

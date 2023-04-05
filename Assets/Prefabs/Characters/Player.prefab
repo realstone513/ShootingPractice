@@ -22,7 +22,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5573317114849772138
 Transform:
   m_ObjectHideFlags: 0
@@ -81,13 +81,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceabf4a6e71e25248a9f30aa7b1edc6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainWeaponPos: {fileID: 4753558688936230924}
-  subWeaponPos:
+  mainWeapon: {fileID: 11400000, guid: b37ad5267ad1f0c459e89ef488de67ed, type: 2}
+  mainShootTransform: {fileID: 4753558688936230924}
+  subWeapon: {fileID: 11400000, guid: ef1bc26d41f555d4c83f9c1fd884486d, type: 2}
+  subShootTransform:
   - {fileID: 6674037929100938717}
   - {fileID: 742713520834623474}
-  bullets:
-  - {fileID: 5695295906973642355, guid: 89e3a98d91db3d743af78f6bf4936c9a, type: 3}
-  - {fileID: 7200302961479144051, guid: 298644d08af1cb84093baadc6afa03a5, type: 3}
 --- !u!95 &5691275163568718337
 Animator:
   serializedVersion: 5
