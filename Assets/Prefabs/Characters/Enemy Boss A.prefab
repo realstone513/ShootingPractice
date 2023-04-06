@@ -141,11 +141,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6773688491014048221}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f6d7794ac15062489f076e3163648b2, type: 3}
+  m_Script: {fileID: 11500000, guid: f423be689fb9df04e8eff0fec5498b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   healthPoint: 15000
-  curHp: 0
+  curHp: 15000
   hpBar: {fileID: 0}
   value: 1000
   mainWeapon: {fileID: 11400000, guid: 3b8b790466810224b91ae4edd71c08fb, type: 2}
@@ -155,7 +155,9 @@ MonoBehaviour:
   - {fileID: 2229504405390195842}
   - {fileID: 6969984839194399740}
   moveDirection: {x: 0, y: -1}
-  moveSpeed: 1
+  moveSpeed: 3
+  otherWeapons:
+  - {fileID: 11400000, guid: 74c60f8ec5bf07642b596f29de105de0, type: 2}
 --- !u!212 &6773688491014048223
 SpriteRenderer:
   m_ObjectHideFlags: 0

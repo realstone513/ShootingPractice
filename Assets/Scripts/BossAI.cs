@@ -1,9 +1,14 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class BossAI : EnemyAI
+public abstract class BossAI : EnemyAI
 {
+    protected int phase = 0;
+    public List<Weapon> otherWeapons;
+
     protected override void OnEnable()
+
     {
         base.OnEnable();
         subWeaponDelayTimer = 0f;
@@ -13,7 +18,13 @@ public class BossAI : EnemyAI
     protected override void Update()
     {
         base.Update();
-        ShootSubWeapon();
+        if (phase == 0 && HPRatio < 0.5f)
+            ChangePhase(1);
+    }
+
+    protected virtual void ChangePhase(int nextPhase)
+    {
+        phase = nextPhase;
     }
 
     private IEnumerator CoArrangeBoss()

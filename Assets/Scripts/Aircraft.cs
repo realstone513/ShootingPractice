@@ -21,6 +21,8 @@ public abstract class Aircraft : MonoBehaviour
     protected Transform[] subShootTransform;
     protected float subWeaponDelayTimer;
 
+    protected float HPRatio { get => curHp * inverseHP; }
+
     protected GameManager gm;
 
     protected virtual void Awake()
@@ -41,7 +43,7 @@ public abstract class Aircraft : MonoBehaviour
         curHp -= Damage;
         anim.SetTrigger("OnHit");
         if (hpBar != null)
-            hpBar.SetFill(curHp * inverseHP);
+            hpBar.SetFill(HPRatio);
         if (curHp < 0f)
         {
             if (gameObject.CompareTag("Enemy"))
@@ -60,6 +62,7 @@ public abstract class Aircraft : MonoBehaviour
                 gm.DestroyEnemyAircraft(gameObject, true);
                 gm.ClearGame();
             }
+            StopAllCoroutines();
         }
     }
 

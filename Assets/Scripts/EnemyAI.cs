@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyAI : Aircraft
@@ -8,6 +9,7 @@ public class EnemyAI : Aircraft
     protected virtual void Update()
     {
         ShootMainWeapon();
+        ShootSubWeapon();
         if (gameObject.CompareTag("Enemy"))
             gameObject.transform.Translate(moveSpeed * Time.deltaTime * moveDirection);
     }
@@ -29,16 +31,34 @@ public class EnemyAI : Aircraft
         if (mainWeaponDelayTimer > mainWeapon.reloadDelay)
         {
             mainWeaponDelayTimer = 0f;
-            string mainWeaponName = mainWeapon.bulletPrefab.name;
-            GameObject bulletObj = gm.GetBullet(mainWeaponName);
-            Bullet bullet = bulletObj.GetComponent<Bullet>();
-            mainWeapon.SetBulletData(bullet);
-            if (mainWeapon.isGuidedMissile)
-            {
-                GameObject target = GameManager.Instance.player;
-                bullet.SetDirection(target.transform.position - gameObject.transform.position);
-            }
-            bulletObj.transform.position = mainShootTransform.position;
+            if (mainWeapon.magazineSize == 1)
+                MainSingleShot();
+            else
+                StartCoroutine(CoMainOpenFire());
+        }
+    }
+
+    protected virtual void MainSingleShot(Vector2? direction = null, bool customDirection = false, bool isGuided = false)
+    {
+        GameObject bulletObj = gm.GetBullet(mainWeapon.bulletPrefab.name);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        mainWeapon.SetBulletData(bullet);
+        if (mainWeapon.isGuidedMissile || isGuided)
+        {
+            GameObject target = GameManager.Instance.player;
+            bullet.SetDirection(customDirection ? (Vector2)direction : target.transform.position - mainShootTransform.position);
+        }
+        bulletObj.transform.position = mainShootTransform.position;
+    }
+
+    protected virtual IEnumerator CoMainOpenFire()
+    {
+        int count = mainWeapon.magazineSize;
+        WaitForSeconds wfs = new (mainWeapon.fireRate);
+        for (int i = 0; i < count; i++)
+        {
+            MainSingleShot();
+            yield return mainWeapon.fireRate == 0 ? null : wfs;
         }
     }
 
@@ -54,17 +74,35 @@ public class EnemyAI : Aircraft
             int count = subShootTransform.Length;
             for (int i = 0; i < count; i++)
             {
-                string subWeaponName = subWeapon.bulletPrefab.name;
-                GameObject bulletObj = gm.GetBullet(subWeaponName);
-                Bullet bullet = bulletObj.GetComponent<Bullet>();
-                subWeapon.SetBulletData(bullet);
-                if (subWeapon.isGuidedMissile)
-                {
-                    GameObject target = GameManager.Instance.player;
-                    bullet.SetDirection(target.transform.position - gameObject.transform.position);
-                }
-                bulletObj.transform.position = subShootTransform[i].position;
+                if (subWeapon.magazineSize == 1)
+                    SubSingleShot(i);
+                else
+                    StartCoroutine(CoSubOpenFire(i));
             }
+        }
+    }
+
+    protected virtual void SubSingleShot(int index)
+    {
+        GameObject bulletObj = gm.GetBullet(subWeapon.bulletPrefab.name);
+        Bullet bullet = bulletObj.GetComponent<Bullet>();
+        subWeapon.SetBulletData(bullet);
+        if (subWeapon.isGuidedMissile)
+        {
+            GameObject target = GameManager.Instance.player;
+            bullet.SetDirection(target.transform.position - subShootTransform[index].position);
+        }
+        bulletObj.transform.position = subShootTransform[index].position;
+    }
+
+    protected virtual IEnumerator CoSubOpenFire(int index)
+    {
+        int count = subWeapon.magazineSize;
+        WaitForSeconds wfs = new(subWeapon.fireRate);
+        for (int i = 0; i < count; i++)
+        {
+            SubSingleShot(index);
+            yield return subWeapon.fireRate == 0 ? null : wfs;
         }
     }
 }

@@ -173,7 +173,9 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
         boss.SetActive(true);
-        boss.GetComponent<Aircraft>().hpBar = bossHPBar.GetComponent<HpBar>();
+        HpBar bossHPbarComponent = bossHPBar.GetComponent<HpBar>();
+        boss.GetComponent<Aircraft>().hpBar = bossHPbarComponent;
+        bossHPbarComponent.SetFill(1f);
         bossHPBar.SetActive(true);
     }
 

@@ -17,5 +17,6 @@ MonoBehaviour:
   damage: 15
   bulletSpeed: 2.5
   magazineSize: 1
+  fireRate: 0.2
   shootDirection: {x: 0, y: -1}
   isGuidedMissile: 1
