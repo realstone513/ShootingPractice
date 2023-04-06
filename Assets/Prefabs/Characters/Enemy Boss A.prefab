@@ -155,7 +155,7 @@ MonoBehaviour:
   - {fileID: 2229504405390195842}
   - {fileID: 6969984839194399740}
   moveDirection: {x: 0, y: -1}
-  moveSpeed: 3
+  moveSpeed: 1
 --- !u!212 &6773688491014048223
 SpriteRenderer:
   m_ObjectHideFlags: 0

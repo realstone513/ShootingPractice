@@ -54,6 +54,12 @@ public abstract class Aircraft : MonoBehaviour
                 gm.EndGame();
                 Debug.Log("Player Die");
             }
+            else if (gameObject.CompareTag("Boss"))
+            {
+                gm.TranslateScore(value);
+                gm.DestroyEnemyAircraft(gameObject, true);
+                gm.ClearGame();
+            }
         }
     }
 

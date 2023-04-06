@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: BossASubWeapon
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 5336752889520580862, guid: 951b124555318c34fb3da69524f83c31, type: 3}
-  reloadDelay: 4
+  reloadDelay: 5
   damage: 10
   bulletSpeed: 5
+  magazineSize: 1
   shootDirection: {x: 0, y: -1}
   isGuidedMissile: 0

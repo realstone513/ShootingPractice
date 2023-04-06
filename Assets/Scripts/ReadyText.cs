@@ -7,10 +7,12 @@ public class ReadyText : MonoBehaviour
     private float duration = 0f;
     private bool isOff = false;
     public TextMeshProUGUI readyText;
+    private GameManager gm;
 
     private void Awake()
     {
         readyText = GetComponent<TextMeshProUGUI>();
+        gm = GameManager.Instance;
     }
 
     private void OnEnable()
@@ -22,15 +24,23 @@ public class ReadyText : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown)
-            GameManager.Instance.StartGame();
-
-        duration += Time.deltaTime;
-        if (duration > timer)
+        if (gm.isClear)
         {
-            isOff = !isOff;
-            readyText.enabled = isOff;
-            duration = 0f;
+            if (Input.GetKeyDown(KeyCode.Space))
+                gm.StartGame();
+        }
+        else
+        {
+            if (Input.anyKeyDown)
+                gm.StartGame();
+
+            duration += Time.deltaTime;
+            if (duration > timer)
+            {
+                isOff = !isOff;
+                readyText.enabled = isOff;
+                duration = 0f;
+            }
         }
     }
 }

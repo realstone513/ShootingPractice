@@ -89,7 +89,7 @@ MonoBehaviour:
   subWeapon: {fileID: 0}
   subShootTransform: []
   moveDirection: {x: 0, y: -1}
-  moveSpeed: 3
+  moveSpeed: 2
 --- !u!212 &4639999765489157529
 SpriteRenderer:
   m_ObjectHideFlags: 0

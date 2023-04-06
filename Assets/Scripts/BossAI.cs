@@ -6,8 +6,6 @@ public class BossAI : EnemyAI
     protected override void OnEnable()
     {
         base.OnEnable();
-        moveDirection = Vector2.down;
-        moveSpeed = 1f;
         subWeaponDelayTimer = 0f;
         StartCoroutine(CoArrangeBoss());
     }
@@ -27,8 +25,4 @@ public class BossAI : EnemyAI
             yield return null;
         }
     }
-
-    //public override void ShootSubWeapon()
-    //{
-    //}
 }

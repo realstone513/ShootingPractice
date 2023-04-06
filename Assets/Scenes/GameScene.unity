@@ -1307,6 +1307,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1645166823}
     - target: {fileID: 3433092257529685763, guid: 3550a57d6a54b424a8a126d4fae95d42, type: 3}
+      propertyPath: centerText
+      value: 
+      objectReference: {fileID: 84288851}
+    - target: {fileID: 3433092257529685763, guid: 3550a57d6a54b424a8a126d4fae95d42, type: 3}
       propertyPath: spawnPositions.Array.data[0]
       value: 
       objectReference: {fileID: 1161842613}

@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -14,10 +13,11 @@ public class GameManager : Singleton<GameManager>
     public List<GameObject> bossPrefabs;
     public List<GameObject> enemyPrefabs;
     public GameObject bossHPBar;
-    public GameObject readyText;
+    public TextMeshProUGUI centerText;
     public TextMeshProUGUI scoreText;
     private List<GameObject> liveEnemyAircrafts = new ();
     private int score;
+    public bool isClear = false;
 
     [Header("Stage")]
     private List<Dictionary<int, WaveData>> stageDatas = new();
@@ -111,9 +111,11 @@ public class GameManager : Singleton<GameManager>
             Destroy(boss);
         }
         player.SetActive(true);
-        readyText.SetActive(false);
-        TranslateScore(0, true);
+        player.transform.position = playerWaitPos;
+        centerText.gameObject.SetActive(false);
+        TranslateScore(0, !isClear); // 클리어 못하면 점수 초기화, 클리어면 초기화 X
         StartCoroutine(CoStartGame());
+        isClear = false;
     }
 
     private IEnumerator CoStartGame()
@@ -160,7 +162,6 @@ public class GameManager : Singleton<GameManager>
             yield return new WaitForSeconds(waveData.interval);
         }
 
-        //Debug.Log("Boss");
         WaveData bossWave = stageDatas[currentStageIndex][0];
         char bossID = bossWave.arrange[0];
         switch (bossID)
@@ -179,8 +180,19 @@ public class GameManager : Singleton<GameManager>
     public void EndGame()
     {
         player.SetActive(false);
-        readyText.SetActive(true);
+        StopAllCoroutines();
+        centerText.gameObject.SetActive(true);
+        centerText.text = "PRESS ANY KEY";
         player.transform.position = playerWaitPos;
+    }
+
+    public void ClearGame()
+    {
+        isClear = true;
+        centerText.gameObject.SetActive(true);
+        centerText.text = "CLEAR !!\nPRESS SPACE TO START";
+        if (stageDatas.Count != currentStageIndex)
+            currentStageIndex++;
     }
 
     public void TranslateScore(int score, bool setScore = false)

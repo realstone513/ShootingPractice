@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BossAMainWeapon
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 6959315781886169545, guid: 1d41877f89a202a47b3bc2678213423b, type: 3}
-  reloadDelay: 0.6
+  reloadDelay: 0.8
   damage: 15
   bulletSpeed: 2.5
   magazineSize: 1
