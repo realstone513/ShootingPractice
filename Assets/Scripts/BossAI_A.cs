@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +8,10 @@ public class BossAI_A : BossAI
     private void Start()
     {
         customDirections.Add(Vector2.down);
-        customDirections.Add(new Vector2(-1, 1).normalized);
-        customDirections.Add(new Vector2(1, 1).normalized);
+        customDirections.Add(new Vector2(-1, -2).normalized);
+        customDirections.Add(new Vector2(1, -2).normalized);
+        customDirections.Add(new Vector2(-3, -2).normalized);
+        customDirections.Add(new Vector2(3, -2).normalized);
     }
 
     protected override void ChangePhase(int nextPhase)
@@ -32,28 +33,14 @@ public class BossAI_A : BossAI
             if (mainWeaponDelayTimer > mainWeapon.reloadDelay)
             {
                 mainWeaponDelayTimer = 0f;
-                //if (mainWeapon.magazineSize == 1)
-                //    MainSingleShot();
-                //else
-                StartCoroutine(CoMainOpenFire());
+                int count = customDirections.Count;
+                GameObject target = GameManager.Instance.player;
+                for (int i = 0; i < count; i++)
+                {
+                    Vector2 fixDir = target.transform.position - mainShootTransform.position;
+                    MainSingleShot(customDirections[i] + fixDir, true, false);
+                }
             }
         }
     }
-
-
-    protected override IEnumerator CoMainOpenFire()
-    {
-        int count = mainWeapon.magazineSize;
-        WaitForSeconds wfs = new(mainWeapon.fireRate);
-        for (int i = 0; i < count; i++)
-        {
-            MainSingleShot(customDirections[i], true, false);
-            yield return mainWeapon.fireRate == 0 ? null : wfs;
-        }
-    }
-
-    //public override void ShootSubWeapon()
-    //{
-    //    base.ShootSubWeapon();
-    //}
 }

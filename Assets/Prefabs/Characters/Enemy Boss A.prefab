@@ -155,7 +155,7 @@ MonoBehaviour:
   - {fileID: 2229504405390195842}
   - {fileID: 6969984839194399740}
   moveDirection: {x: 0, y: -1}
-  moveSpeed: 3
+  moveSpeed: 1
   otherWeapons:
   - {fileID: 11400000, guid: 74c60f8ec5bf07642b596f29de105de0, type: 2}
 --- !u!212 &6773688491014048223

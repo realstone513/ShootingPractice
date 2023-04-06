@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
     public List<GameObject> bossPrefabs;
     public List<GameObject> enemyPrefabs;
     public GameObject bossHPBar;
+    public HpBar playerHPBar;
     public TextMeshProUGUI centerText;
     public TextMeshProUGUI scoreText;
     private List<GameObject> liveEnemyAircrafts = new ();
@@ -112,10 +113,20 @@ public class GameManager : Singleton<GameManager>
         }
         player.SetActive(true);
         player.transform.position = playerWaitPos;
+        playerHPBar.SetFill(1f);
         centerText.gameObject.SetActive(false);
         TranslateScore(0, !isClear); // 클리어 못하면 점수 초기화, 클리어면 초기화 X
         StartCoroutine(CoStartGame());
         isClear = false;
+        foreach (var pool in bullets)
+        {
+            var useQueue = pool.Value.useQueue;
+            foreach (var bullet in useQueue)
+            {
+                Destroy(bullet);
+            }
+            useQueue.Clear();
+        }
     }
 
     private IEnumerator CoStartGame()
@@ -230,15 +241,6 @@ public class GameManager : Singleton<GameManager>
             backgrounds[i].transform.Translate(platformSpeed * Time.deltaTime * Vector2.down);
             if (backgrounds[i].transform.position.y < -backgroundSize)
                 backgrounds[i].transform.Translate(2 * backgroundSize * Vector3.up);
-        }
-
-        //if (Input.GetKeyDown(KeyCode.O))
-        //{
-        //    StartGame();
-        //}
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            EndGame();
         }
     }
 }
