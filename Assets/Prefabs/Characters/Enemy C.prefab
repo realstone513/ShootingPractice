@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 626288673882707068}
   - component: {fileID: 3410213646261095781}
-  - component: {fileID: 7397921077293320390}
   - component: {fileID: 626288673882707069}
   - component: {fileID: 626288673882707070}
   - component: {fileID: 1748197511}
@@ -50,25 +49,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923e628b1b134744796b29aae4e23f8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: {x: 0, y: -1}
-  speed: 2
-  mainWeapon: {fileID: 11400000, guid: cd2af006a817d8949bdfd8de3988cb99, type: 2}
-  mainShootTransform: {fileID: 3073264619394127050}
---- !u!114 &7397921077293320390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626288673882707071}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 25ba6fd220ebff14fb9febc7371c7595, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthPoint: 300
+  healthPoint: 360
   curHp: 0
   hpBar: {fileID: 0}
+  value: 100
+  mainWeapon: {fileID: 11400000, guid: cd2af006a817d8949bdfd8de3988cb99, type: 2}
+  mainShootTransform: {fileID: 3073264619394127050}
+  subWeapon: {fileID: 0}
+  subShootTransform: []
+  moveDirection: {x: 0, y: -1}
+  moveSpeed: 3
 --- !u!212 &626288673882707069
 SpriteRenderer:
   m_ObjectHideFlags: 0

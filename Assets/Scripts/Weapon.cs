@@ -4,19 +4,17 @@ using UnityEngine;
 public class Weapon : ScriptableObject
 {
     public GameObject bulletPrefab;
-    [Range (0f, 5f)]
+    [Range (0f, 10f)]
     public float reloadDelay;
     public float damage;
     public float bulletSpeed;
+    [Range (1, 100)]
+    public int magazineSize = 1;
     public Vector2 shootDirection;
     public bool isGuidedMissile = false;
 
-    public void Init()
+    public void SetBulletData(Bullet bullet)
     {
-        if (bulletPrefab == null)
-            return;
-
-        Bullet bullet = bulletPrefab.GetComponent<Bullet>();
-        bullet.SetFromWeaponSetting(bulletSpeed, damage, shootDirection, isGuidedMissile);
+        bullet.SetFromWeaponSetting(bulletSpeed, damage, shootDirection);
     }
 }

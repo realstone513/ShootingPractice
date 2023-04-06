@@ -1,45 +1,16 @@
 using UnityEngine;
 
-public class PlayerWeapons : MonoBehaviour, IMainWeapon, ISubWeapon
+public class PlayerWeapons : Aircraft
 {
-    [SerializeField]
-    private Weapon mainWeapon;
-    [SerializeField]
-    private Transform mainShootTransform;
-    private float mainWeaponDelayTimer;
-
-    [SerializeField]
-    private Weapon subWeapon;
-    [SerializeField]
-    private Transform[] subShootTransform;
-    private float subWeaponDelayTimer;
-
-    private GameManager gm;
     public float DPS { get => mainWeapon.damage / mainWeapon.reloadDelay + subWeapon.damage / subWeapon.reloadDelay * subShootTransform.Length; }
 
-    public Weapon MainWeapon { get => mainWeapon; set => mainWeapon = value; }
-    public Transform MainShootTransform { get => mainShootTransform; set => mainShootTransform = value; }
-    public float MainWeaponDelayTimer { get => mainWeaponDelayTimer; set => mainWeaponDelayTimer = value; }
-    public Weapon SubWeapon { get => subWeapon; set => subWeapon = value; }
-    public Transform[] SubShootTransform { get => subShootTransform; set => subShootTransform = value; }
-    public float SubWeaponDelayTimer { get => subWeaponDelayTimer; set => subWeaponDelayTimer = value; }
-
-    private void Start()
+    protected override void OnEnable()
     {
-        gm = GameManager.Instance;
-        if (mainWeapon != null)
-            mainWeapon.Init();
-        if (subWeapon != null)
-            subWeapon.Init();
-    }
-
-    private void OnEnable()
-    {
-        mainWeaponDelayTimer = 0f;
+        base.OnEnable();
         subWeaponDelayTimer = 0f;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         ShootMainWeapon();
         ShootSubWeapon();
@@ -49,7 +20,7 @@ public class PlayerWeapons : MonoBehaviour, IMainWeapon, ISubWeapon
         }
     }
 
-    public void ShootMainWeapon()
+    public override void ShootMainWeapon()
     {
         if (mainWeapon == null)
             return;
@@ -64,7 +35,7 @@ public class PlayerWeapons : MonoBehaviour, IMainWeapon, ISubWeapon
         }
     }
 
-    public void ShootSubWeapon()
+    public override void ShootSubWeapon()
     {
         if (subWeapon == null)
             return;

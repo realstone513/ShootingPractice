@@ -7,33 +7,24 @@ public class Bullet : MonoBehaviour
     public Vector2 direction;
     private readonly float lifeTime = 5f;
     private float duration = 0f;
-    private bool isGuidedMissile = false;
-    private GameObject target;
 
-    private void Start()
+    public void SetFromWeaponSetting(float bulletSpeed, float damage, Vector2 direction)
     {
-        direction = direction.normalized;
-    }
-
-    public void SetFromWeaponSetting(float bulletSpeed, float damage, Vector2 direction, bool isGuidedMissile = false)
-    {
-        Debug.Log($"{gameObject.name} {bulletSpeed} {damage} {direction}");
         this.bulletSpeed = bulletSpeed;
         this.damage = damage;
-        if (!isGuidedMissile)
-            this.direction = direction.normalized;
-        else
-        {
-            if (gameObject.CompareTag("Enemy"))
+        this.direction = direction;
+    }
 
-            target = GameManager.Instance.player;
-        }
-        this.isGuidedMissile = isGuidedMissile;
+    public void SetDirection(Vector2 direction)
+    {
+        this.direction = direction.normalized;
+        gameObject.transform.Rotate(this.direction);
     }
 
     private void OnEnable()
     {
         duration = 0f;
+        SetDirection(direction);
     }
 
     private void Update()

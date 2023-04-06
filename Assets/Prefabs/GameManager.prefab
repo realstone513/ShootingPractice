@@ -79,11 +79,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   boss: {fileID: 0}
+  bossPrefabs:
+  - {fileID: 6773688491014048221, guid: baa45d241c5a80141a84cbc57e6c3d3d, type: 3}
   enemyPrefabs:
   - {fileID: 4639999765489157535, guid: 9a3ff7e92bc5f3e45aa06b229328a475, type: 3}
   - {fileID: 7282273567296621217, guid: 9c7a95adf77bf6449ba2332c84d5dbd2, type: 3}
   - {fileID: 626288673882707071, guid: 66404ae0df7b48442a48b2632f56a3dd, type: 3}
+  bossHPBar: {fileID: 0}
   readyText: {fileID: 0}
+  scoreText: {fileID: 0}
   spawnPositions:
   - {fileID: 0}
   - {fileID: 0}
@@ -104,6 +108,10 @@ MonoBehaviour:
   - {fileID: 6959315781886169545, guid: 1d41877f89a202a47b3bc2678213423b, type: 3}
   poolLimitCount: 20
   bulletsTransform: {fileID: 2410552099571426456}
+  playerInitPos: {x: 0, y: -4}
+  playerWaitPos: {x: 0, y: -7}
+  bossInitPos: {x: 0, y: 3}
+  bossWaitPos: {x: 0, y: 7}
 --- !u!1 &8918998674840808155
 GameObject:
   m_ObjectHideFlags: 0

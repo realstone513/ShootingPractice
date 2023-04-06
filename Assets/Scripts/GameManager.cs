@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -13,8 +15,9 @@ public class GameManager : Singleton<GameManager>
     public List<GameObject> enemyPrefabs;
     public GameObject bossHPBar;
     public GameObject readyText;
+    public TextMeshProUGUI scoreText;
     private List<GameObject> liveEnemyAircrafts = new ();
-    private bool isPlaying = false;
+    private int score;
 
     [Header("Stage")]
     private List<Dictionary<int, WaveData>> stageDatas = new();
@@ -109,6 +112,7 @@ public class GameManager : Singleton<GameManager>
         }
         player.SetActive(true);
         readyText.SetActive(false);
+        TranslateScore(0, true);
         StartCoroutine(CoStartGame());
     }
 
@@ -120,7 +124,6 @@ public class GameManager : Singleton<GameManager>
             player.transform.position += (arrangeSpeed + 1) * Time.deltaTime * Vector3.up;
             yield return null;
         }
-        isPlaying = true;
         StartCoroutine(CoStartStage());
     }
 
@@ -178,7 +181,15 @@ public class GameManager : Singleton<GameManager>
         player.SetActive(false);
         readyText.SetActive(true);
         player.transform.position = playerWaitPos;
-        isPlaying = false;
+    }
+
+    public void TranslateScore(int score, bool setScore = false)
+    {
+        if (setScore)
+            this.score = score;
+        else
+            this.score += score;
+        scoreText.text = $"SCORE : {this.score}";
     }
 
     public void DestroyEnemyAircraft(GameObject gameObject, bool playerKill = false)

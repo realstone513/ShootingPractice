@@ -1,22 +1,39 @@
 using UnityEngine;
 
-public class Aircraft : MonoBehaviour
+public abstract class Aircraft : MonoBehaviour
 {
     public float healthPoint;
     public float curHp;
     public HpBar hpBar;
+    public int value;
     private Animator anim;
     private float inverseHP;
 
-    private void Awake()
+    [SerializeField]
+    protected Weapon mainWeapon;
+    [SerializeField]
+    protected Transform mainShootTransform;
+    protected float mainWeaponDelayTimer;
+
+    [SerializeField]
+    protected Weapon subWeapon;
+    [SerializeField]
+    protected Transform[] subShootTransform;
+    protected float subWeaponDelayTimer;
+
+    protected GameManager gm;
+
+    protected virtual void Awake()
     {
         anim = GetComponent<Animator>();
         inverseHP = 1f / healthPoint;
+        gm = GameManager.Instance;
     }
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         SetFullHP();
+        mainWeaponDelayTimer = mainWeapon.reloadDelay;
     }
 
     public void GetDamage(float Damage)
@@ -28,14 +45,23 @@ public class Aircraft : MonoBehaviour
         if (curHp < 0f)
         {
             if (gameObject.CompareTag("Enemy"))
-                GameManager.Instance.DestroyEnemyAircraft(gameObject, true);
+            {
+                gm.TranslateScore(value);
+                gm.DestroyEnemyAircraft(gameObject, true);
+            }
             else if (gameObject.CompareTag("Player"))
+            {
+                gm.EndGame();
                 Debug.Log("Player Die");
+            }
         }
     }
 
-    private void SetFullHP()
+    protected void SetFullHP()
     {
         curHp = healthPoint;
     }
+
+    public abstract void ShootMainWeapon();
+    public abstract void ShootSubWeapon();
 }
