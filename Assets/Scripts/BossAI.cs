@@ -8,7 +8,6 @@ public abstract class BossAI : EnemyAI
     public List<Weapon> otherWeapons;
 
     protected override void OnEnable()
-
     {
         base.OnEnable();
         subWeaponDelayTimer = 0f;
@@ -20,6 +19,21 @@ public abstract class BossAI : EnemyAI
         base.Update();
         if (phase == 0 && HPRatio < 0.5f)
             ChangePhase(1);
+    }
+    public override void GetDamage(float Damage)
+    {
+        base.GetDamage(Damage);
+        if (curHp < 0f)
+        {
+            if (gameObject.CompareTag("Boss"))
+            {
+                gm.TranslateScore(value);
+                gm.UseEffect("Boom", gameObject.transform.position, 0.25f);
+                gm.DestroyEnemyAircraft(gameObject, true);
+                gm.ClearGame();
+            }
+            StopAllCoroutines();
+        }
     }
 
     protected virtual void ChangePhase(int nextPhase)

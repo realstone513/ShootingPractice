@@ -16,14 +16,14 @@ public class GameManager : Singleton<GameManager>
     public HpBar playerHPBar;
     public TextMeshProUGUI centerText;
     public TextMeshProUGUI scoreText;
-    private List<GameObject> liveEnemyAircrafts = new ();
+    private List<GameObject> liveEnemyAircrafts = new();
     private int score;
     public bool isClear = false;
 
     [Header("Stage")]
     private List<Dictionary<int, WaveData>> stageDatas = new();
     private int currentStageIndex = 0;
-    public List<Transform> spawnPositions = new ();
+    public List<Transform> spawnPositions = new();
 
     [Header("Platform")]
     public GameObject[] backgrounds;
@@ -33,7 +33,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Bullet")]
     [SerializeField]
     private List<GameObject> bulletTypes;
-    public Dictionary<string, CustomObjectPool> bullets = new ();
+    public Dictionary<string, CustomObjectPool> bullets = new();
     public int poolLimitCount = 20;
     public Transform bulletsTransform;
 
@@ -42,6 +42,9 @@ public class GameManager : Singleton<GameManager>
     public Vector2 playerWaitPos = new(0, -7);
     public Vector2 bossInitPos = new(0, 3);
     public Vector2 bossWaitPos = new(0, 7);
+
+    [Header("Effect")]
+    public GameObject[] effects;
 
     public struct WaveData
     {
@@ -61,9 +64,9 @@ public class GameManager : Singleton<GameManager>
         int count = bulletTypes.Count;
         for (int i = 0; i < count; i++)
         {
-            GameObject spawnObj = new (bulletTypes[i].name);
+            GameObject spawnObj = new(bulletTypes[i].name);
             spawnObj.transform.parent = bulletsTransform;
-            bullets[bulletTypes[i].name] = new (poolLimitCount, bulletTypes[i], spawnObj.transform);
+            bullets[bulletTypes[i].name] = new(poolLimitCount, bulletTypes[i], spawnObj.transform);
         }
         bulletTypes.Clear();
         ReadAllStages();
@@ -74,7 +77,7 @@ public class GameManager : Singleton<GameManager>
         string stageStr = "stage";
         int stageFileCount = 0;
         string resourcesPath = $"{Application.dataPath}/Resources";
-        StringBuilder filePath = new ();
+        StringBuilder filePath = new();
         while (true)
         {
             filePath.Append($"{stageStr}{(stageFileCount < 10 ? "0" : "")}{stageFileCount}");
@@ -180,7 +183,7 @@ public class GameManager : Singleton<GameManager>
             case 'A':
                 boss = Instantiate(bossPrefabs[0], bossWaitPos, Quaternion.identity, spawnPositions[spawnPositions.Count / 2]); // Center
                 break;
-            default: 
+            default:
                 break;
         }
         boss.SetActive(true);
@@ -204,7 +207,7 @@ public class GameManager : Singleton<GameManager>
         isClear = true;
         centerText.gameObject.SetActive(true);
         centerText.text = "CLEAR !!\nPRESS SPACE TO START";
-        if (stageDatas.Count != currentStageIndex)
+        if (stageDatas.Count != currentStageIndex - 1)
             currentStageIndex++;
     }
 
@@ -241,6 +244,19 @@ public class GameManager : Singleton<GameManager>
             backgrounds[i].transform.Translate(platformSpeed * Time.deltaTime * Vector2.down);
             if (backgrounds[i].transform.position.y < -backgroundSize)
                 backgrounds[i].transform.Translate(2 * backgroundSize * Vector3.up);
+        }
+    }
+
+    public void UseEffect(string name, Vector2 pos, float time = 1f)
+    {
+        int count = effects.Length;
+        for (int i = 0; i < count; i++)
+        {
+            if (effects[i].name.Equals(name))
+            {
+                GameObject target = Instantiate(effects[i], pos, Quaternion.identity);
+                Destroy(target, time);
+            }
         }
     }
 }

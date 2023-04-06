@@ -20,6 +20,17 @@ public class PlayerWeapons : Aircraft
         }
     }
 
+    public override void GetDamage(float Damage)
+    {
+        base.GetDamage(Damage);
+        if (curHp < 0f)
+        {
+            gm.EndGame();
+            StopAllCoroutines();
+            Debug.Log("Player Die");
+        }
+    }
+
     public override void ShootMainWeapon()
     {
         if (mainWeapon == null)

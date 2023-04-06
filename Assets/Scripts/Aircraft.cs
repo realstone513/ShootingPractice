@@ -38,32 +38,12 @@ public abstract class Aircraft : MonoBehaviour
         mainWeaponDelayTimer = mainWeapon.reloadDelay;
     }
 
-    public void GetDamage(float Damage)
+    public virtual void GetDamage(float damage)
     {
-        curHp -= Damage;
+        curHp -= damage;
         anim.SetTrigger("OnHit");
         if (hpBar != null)
             hpBar.SetFill(HPRatio);
-        if (curHp < 0f)
-        {
-            if (gameObject.CompareTag("Enemy"))
-            {
-                gm.TranslateScore(value);
-                gm.DestroyEnemyAircraft(gameObject, true);
-            }
-            else if (gameObject.CompareTag("Player"))
-            {
-                gm.EndGame();
-                Debug.Log("Player Die");
-            }
-            else if (gameObject.CompareTag("Boss"))
-            {
-                gm.TranslateScore(value);
-                gm.DestroyEnemyAircraft(gameObject, true);
-                gm.ClearGame();
-            }
-            StopAllCoroutines();
-        }
     }
 
     protected void SetFullHP()

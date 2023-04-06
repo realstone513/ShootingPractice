@@ -22,6 +22,21 @@ public class EnemyAI : Aircraft
         }
     }
 
+    public override void GetDamage(float Damage)
+    {
+        base.GetDamage(Damage);
+        if (curHp < 0f)
+        {
+            if (gameObject.CompareTag("Enemy"))
+            {
+                gm.TranslateScore(value);
+                gm.UseEffect("Explosion", gameObject.transform.position, 0.5f);
+                gm.DestroyEnemyAircraft(gameObject, true);
+            }
+            StopAllCoroutines();
+        }
+    }
+
     public override void ShootMainWeapon()
     {
         if (mainWeapon == null)
@@ -56,7 +71,7 @@ public class EnemyAI : Aircraft
     protected virtual IEnumerator CoMainOpenFire()
     {
         int count = mainWeapon.magazineSize;
-        WaitForSeconds wfs = new (mainWeapon.fireRate);
+        WaitForSeconds wfs = new(mainWeapon.fireRate);
         for (int i = 0; i < count; i++)
         {
             MainSingleShot();
