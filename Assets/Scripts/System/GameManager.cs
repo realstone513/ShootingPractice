@@ -297,7 +297,7 @@ public class GameManager : Singleton<GameManager>
         int count = items.Count;
         for (int i = 0; i < count; i++)
         {
-            if (!items[i].name.Contains(name))
+            if (!name.Contains(items[i].name))
                 continue;
 
             switch (items[i].name)

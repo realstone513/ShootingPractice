@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossAI_A : BossAI
+public class BossA : BossAI
 {
     protected List<Vector2> customDirections = new ();
 
