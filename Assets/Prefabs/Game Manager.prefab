@@ -97,6 +97,9 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  stages:
+  - {fileID: 4900000, guid: eab02c9f19766e84f94e614b682fae66, type: 3}
+  - {fileID: 4900000, guid: 1fcedfeb8de6f7c48a52cb5c4052c9c0, type: 3}
   backgrounds:
   - {fileID: 1334337345835185706}
   - {fileID: 5790866388484202795}

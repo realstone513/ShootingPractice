@@ -24,6 +24,7 @@ public class GameManager : Singleton<GameManager>
     private List<Dictionary<int, WaveData>> stageDatas = new();
     private int currentStageIndex = 0;
     public List<Transform> spawnPositions = new();
+    public List<TextAsset> stages = new();
 
     [Header("Platform")]
     public GameObject[] backgrounds;
@@ -82,31 +83,21 @@ public class GameManager : Singleton<GameManager>
 
     private void ReadAllStages()
     {
-        string stageStr = "stage";
         int stageFileCount = 0;
-        string resourcesPath = $"{Application.dataPath}/Resources";
-        StringBuilder filePath = new();
-        while (true)
+        while (stageFileCount < stages.Count)
         {
-            filePath.Append($"{stageStr}{(stageFileCount < 10 ? "0" : "")}{stageFileCount}");
-            if (File.Exists($"{resourcesPath}/{filePath}.csv"))
-            {
-                List<Dictionary<string, object>> data = CSVReader.Read(filePath.ToString());
-                int stageCount = (int)data[0]["Index"];
+            List<Dictionary<string, object>> data = CSVReader.SplitTextAsset(stages[stageFileCount]);
+            int stageCount = (int)data[0]["Index"];
 
-                Dictionary<int, WaveData> currentStage = new();
-                for (int i = 0; i <= stageCount; i++)
-                {
-                    string arrange = (string)data[i]["arrange"];
-                    float interval = float.Parse(data[i]["interval"].ToString());
-                    int index = (int)data[i]["Index"];
-                    currentStage.Add(index, new WaveData(arrange, interval));
-                }
-                stageDatas.Add(currentStage);
+            Dictionary<int, WaveData> currentStage = new();
+            for (int i = 0; i <= stageCount; i++)
+            {
+                string arrange = (string)data[i]["arrange"];
+                float interval = float.Parse(data[i]["interval"].ToString());
+                int index = (int)data[i]["Index"];
+                currentStage.Add(index, new WaveData(arrange, interval));
             }
-            else
-                break;
-            filePath.Clear();
+            stageDatas.Add(currentStage);
             stageFileCount++;
         }
     }

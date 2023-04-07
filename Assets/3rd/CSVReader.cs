@@ -9,6 +9,12 @@ public class CSVReader
     static readonly string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     static readonly char[] TRIM_CHARS = { '\"' };
 
+    // New2. Split Text Asset
+    public static List<Dictionary<string, object>> SplitTextAsset(TextAsset asset, bool splitComma = true)
+    {
+        return SplitTokens(asset.text, splitComma);
+    }
+
     public static List<Dictionary<string, object>> Read(string file, bool splitComma = true)
     {
         TextAsset data = Resources.Load(file) as TextAsset;
