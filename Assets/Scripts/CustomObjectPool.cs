@@ -41,8 +41,9 @@ public class CustomObjectPool : Object
             else
             {
                 target = unuseQueue[0];
-                target.SetActive(true);
                 unuseQueue.Remove(target);
+                if (target != null)
+                    target.SetActive(true);
             }
         }
         useQueue.Add(target);

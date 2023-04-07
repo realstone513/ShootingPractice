@@ -21,7 +21,16 @@ public abstract class Aircraft : MonoBehaviour
     protected Transform[] subShootTransform;
     protected float subWeaponDelayTimer;
 
-    protected float HPRatio { get => curHp * inverseHP; }
+    protected float GetHPRatio { get => curHp * inverseHP; }
+    
+    public void Repair(float repairAmount)
+    {
+        curHp += repairAmount;
+        if (curHp >= healthPoint)
+            curHp = healthPoint;
+        if (hpBar != null)
+            hpBar.SetFill(GetHPRatio);
+    }
 
     protected GameManager gm;
 
@@ -43,7 +52,7 @@ public abstract class Aircraft : MonoBehaviour
         curHp -= damage;
         anim.SetTrigger("OnHit");
         if (hpBar != null)
-            hpBar.SetFill(HPRatio);
+            hpBar.SetFill(GetHPRatio);
     }
 
     protected void SetFullHP()

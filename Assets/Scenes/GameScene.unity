@@ -1299,10 +1299,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1394572242}
     - target: {fileID: 3433092257529685763, guid: 3550a57d6a54b424a8a126d4fae95d42, type: 3}
-      propertyPath: readyText
-      value: 
-      objectReference: {fileID: 84288848}
-    - target: {fileID: 3433092257529685763, guid: 3550a57d6a54b424a8a126d4fae95d42, type: 3}
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 1645166823}
@@ -1310,6 +1306,10 @@ PrefabInstance:
       propertyPath: centerText
       value: 
       objectReference: {fileID: 84288851}
+    - target: {fileID: 3433092257529685763, guid: 3550a57d6a54b424a8a126d4fae95d42, type: 3}
+      propertyPath: playerHPBar
+      value: 
+      objectReference: {fileID: 922244601322749522}
     - target: {fileID: 3433092257529685763, guid: 3550a57d6a54b424a8a126d4fae95d42, type: 3}
       propertyPath: spawnPositions.Array.data[0]
       value: 

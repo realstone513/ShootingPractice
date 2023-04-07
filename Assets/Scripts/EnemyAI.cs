@@ -29,11 +29,18 @@ public class EnemyAI : Aircraft
         {
             if (gameObject.CompareTag("Enemy"))
             {
-                gm.TranslateScore(value);
+                StopAllCoroutines();
                 gm.UseEffect("Explosion", gameObject.transform.position, 0.5f);
+                float itemBoomDropRatio = 0.003f * value;
+                if (Random.Range(0f, 1f) < itemBoomDropRatio)
+                    gm.DropItem("Boom", gameObject.transform.position);
+
+                float itemPowerDropRatio = 0.001f * value;
+                if (Random.Range(0f, 1f) < itemPowerDropRatio)
+                    gm.DropItem("Power", gameObject.transform.position);
+
                 gm.DestroyEnemyAircraft(gameObject, true);
             }
-            StopAllCoroutines();
         }
     }
 
@@ -55,7 +62,7 @@ public class EnemyAI : Aircraft
 
     protected virtual void MainSingleShot(Vector2? direction = null, bool customDirection = false, bool isGuided = false)
     {
-        GameObject bulletObj = gm.GetBullet(mainWeapon.bulletPrefab.name);
+        GameObject bulletObj = gm.GetObjectPool(mainWeapon.bulletPrefab.name);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         mainWeapon.SetBulletData(bullet);
         if (mainWeapon.isGuidedMissile || isGuided)
@@ -63,7 +70,6 @@ public class EnemyAI : Aircraft
             GameObject target = GameManager.Instance.player;
             Vector2 fixDir = customDirection ? (Vector2)direction : target.transform.position - mainShootTransform.position;
             bullet.SetDirection(fixDir);
-            bullet.transform.Rotate(fixDir);
         }
         bulletObj.transform.position = mainShootTransform.position;
     }
@@ -101,7 +107,7 @@ public class EnemyAI : Aircraft
 
     protected virtual void SubSingleShot(int index, Vector2? direction = null, bool customDirection = false, bool isGuided = false)
     {
-        GameObject bulletObj = gm.GetBullet(subWeapon.bulletPrefab.name);
+        GameObject bulletObj = gm.GetObjectPool(subWeapon.bulletPrefab.name);
         Bullet bullet = bulletObj.GetComponent<Bullet>();
         subWeapon.SetBulletData(bullet);
         if (subWeapon.isGuidedMissile)
@@ -109,7 +115,6 @@ public class EnemyAI : Aircraft
             GameObject target = GameManager.Instance.player;
             Vector2 fixDir = customDirection ? (Vector2)direction : target.transform.position - subShootTransform[index].position;
             bullet.SetDirection(fixDir);
-            bullet.transform.Rotate(fixDir);
         }
         bulletObj.transform.position = subShootTransform[index].position;
     }

@@ -18,7 +18,6 @@ public class Bullet : MonoBehaviour
     public void SetDirection(Vector2 direction)
     {
         this.direction = direction.normalized;
-        gameObject.transform.Rotate(this.direction);
     }
 
     private void OnEnable()
@@ -39,7 +38,7 @@ public class Bullet : MonoBehaviour
 
     private void Release()
     {
-        GameManager.Instance.ReleaseBullet(gameObject);
+        GameManager.Instance.ReleaseObject(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

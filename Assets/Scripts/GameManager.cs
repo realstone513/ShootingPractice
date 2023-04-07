@@ -4,6 +4,8 @@ using System.IO;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -33,7 +35,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Bullet")]
     [SerializeField]
     private List<GameObject> bulletTypes;
-    public Dictionary<string, CustomObjectPool> bullets = new();
+    public Dictionary<string, CustomObjectPool> objectPools = new();
     public int poolLimitCount = 20;
     public Transform bulletsTransform;
 
@@ -43,8 +45,9 @@ public class GameManager : Singleton<GameManager>
     public Vector2 bossInitPos = new(0, 3);
     public Vector2 bossWaitPos = new(0, 7);
 
-    [Header("Effect")]
-    public GameObject[] effects;
+    public List<GameObject> effects;
+    public Transform EffectPoolTransform;
+    public List<GameObject> items;
 
     public struct WaveData
     {
@@ -61,12 +64,19 @@ public class GameManager : Singleton<GameManager>
     public override void Awake()
     {
         base.Awake();
-        int count = bulletTypes.Count;
-        for (int i = 0; i < count; i++)
+        int bCount = bulletTypes.Count;
+        for (int i = 0; i < bCount; i++)
         {
             GameObject spawnObj = new(bulletTypes[i].name);
             spawnObj.transform.parent = bulletsTransform;
-            bullets[bulletTypes[i].name] = new(poolLimitCount, bulletTypes[i], spawnObj.transform);
+            objectPools[bulletTypes[i].name] = new(poolLimitCount, bulletTypes[i], spawnObj.transform);
+        }
+        int eCount = effects.Count;
+        for (int i = 0; i < eCount; i++)
+        {
+            GameObject spawnObj = new(effects[i].name);
+            spawnObj.transform.parent = EffectPoolTransform;
+            objectPools[effects[i].name] = new(poolLimitCount, effects[i], spawnObj.transform);
         }
         bulletTypes.Clear();
         ReadAllStages();
@@ -121,7 +131,7 @@ public class GameManager : Singleton<GameManager>
         TranslateScore(0, !isClear); // 클리어 못하면 점수 초기화, 클리어면 초기화 X
         StartCoroutine(CoStartGame());
         isClear = false;
-        foreach (var pool in bullets)
+        foreach (var pool in objectPools)
         {
             var useQueue = pool.Value.useQueue;
             foreach (var bullet in useQueue)
@@ -207,11 +217,11 @@ public class GameManager : Singleton<GameManager>
         isClear = true;
         centerText.gameObject.SetActive(true);
         centerText.text = "CLEAR !!\nPRESS SPACE TO START";
-        if (stageDatas.Count != currentStageIndex - 1)
+        if (stageDatas.Count - 1 != currentStageIndex)
             currentStageIndex++;
     }
 
-    public void TranslateScore(int score, bool setScore = false)
+    private void TranslateScore(int score, bool setScore = false)
     {
         if (setScore)
             this.score = score;
@@ -222,18 +232,20 @@ public class GameManager : Singleton<GameManager>
 
     public void DestroyEnemyAircraft(GameObject gameObject, bool playerKill = false)
     {
+        if (playerKill)
+            TranslateScore(gameObject.GetComponent<Aircraft>().value);
         liveEnemyAircrafts.Remove(gameObject);
         Destroy(gameObject);
     }
 
-    public GameObject GetBullet(string name)
+    public GameObject GetObjectPool(string name)
     {
-        return bullets[name].GetObject();
+        return objectPools[name].GetObject();
     }
 
-    public void ReleaseBullet(GameObject bullet)
+    public void ReleaseObject(GameObject obj)
     {
-        bullets[bullet.name].ReleaseObject(bullet);
+        objectPools[obj.name].ReleaseObject(obj);
     }
 
     private void Update()
@@ -247,15 +259,76 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    public void UseEffect(string name, Vector2 pos, float time = 1f)
+    public void UseEffect(string name, Vector2 pos, float time = 0.5f)
     {
-        int count = effects.Length;
+        int count = effects.Count;
         for (int i = 0; i < count; i++)
         {
-            if (effects[i].name.Equals(name))
+            string effectName = $"Effect {name}";
+            if (effects[i].name.Equals(effectName))
             {
-                GameObject target = Instantiate(effects[i], pos, Quaternion.identity);
-                Destroy(target, time);
+                //GameObject target = Instantiate(effects[i], pos, Quaternion.identity);
+                GameObject target = GetObjectPool(effectName);
+                target.transform.SetPositionAndRotation(pos, Quaternion.identity);
+                StartCoroutine(WaitDelay(target, time));
+                break;
+            }
+        }
+    }
+
+    private IEnumerator WaitDelay(GameObject target, float time)
+    {
+        yield return new WaitForSeconds(time);
+        ReleaseObject(target);
+    }
+
+    public void DropItem(string name, Vector2 pos)
+    {
+        int count = items.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (items[i].name.Equals($"Item {name}"))
+            {
+                Instantiate(items[i], pos, Quaternion.identity);
+                break;
+            }
+        }
+    }
+
+    public void UseItem(string name)
+    {
+        int count = items.Count;
+        for (int i = 0; i < count; i++)
+        {
+            if (name.Contains(items[i].name))
+            {
+                switch (items[i].name)
+                {
+                    case "Item Boom":
+                        UseEffect("Boom", Vector2.zero, 0.5f);
+                        float boomDamage = 500f;
+                        List<Aircraft> liveAircrafts = new ();
+                        foreach (var aircraft in liveEnemyAircrafts)
+                        {
+                            if (aircraft.TryGetComponent<Aircraft>(out var thisAC))
+                                liveAircrafts.Add(thisAC);
+                        }
+                        foreach (var aircraft in liveAircrafts)
+                        {
+                            aircraft.GetDamage(boomDamage);
+                        }
+                        if (boss != null)
+                            boss.GetComponent<Aircraft>().GetDamage(boomDamage);
+                        break;
+                    case "Item Power":
+                        Aircraft playerAircraft = player.GetComponent<PlayerAircraft>();
+                        float repairAmount = playerAircraft.healthPoint * 0.1f;
+                        playerAircraft.Repair(repairAmount);
+                        break;
+                    default:
+                        break;
+                }
+                break;
             }
         }
     }

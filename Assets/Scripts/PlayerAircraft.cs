@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerWeapons : Aircraft
+public class PlayerAircraft : Aircraft
 {
     public float DPS { get => mainWeapon.damage / mainWeapon.reloadDelay + subWeapon.damage / subWeapon.reloadDelay * subShootTransform.Length; }
 
@@ -41,7 +41,7 @@ public class PlayerWeapons : Aircraft
         {
             mainWeaponDelayTimer = 0f;
             string mainWeaponName = mainWeapon.bulletPrefab.name;
-            GameObject bulletObj = gm.GetBullet(mainWeaponName);
+            GameObject bulletObj = gm.GetObjectPool(mainWeaponName);
             bulletObj.transform.position = mainShootTransform.position;
         }
     }
@@ -59,7 +59,7 @@ public class PlayerWeapons : Aircraft
             for (int i = 0; i < count; i++)
             {
                 string subWeaponName = subWeapon.bulletPrefab.name;
-                GameObject bulletObj = gm.GetBullet(subWeaponName);
+                GameObject bulletObj = gm.GetObjectPool(subWeaponName);
                 bulletObj.transform.position = subShootTransform[i].position;
             }
         }

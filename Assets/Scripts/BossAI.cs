@@ -17,7 +17,7 @@ public abstract class BossAI : EnemyAI
     protected override void Update()
     {
         base.Update();
-        if (phase == 0 && HPRatio < 0.5f)
+        if (phase == 0 && GetHPRatio < 0.5f)
             ChangePhase(1);
     }
     public override void GetDamage(float Damage)
@@ -27,8 +27,7 @@ public abstract class BossAI : EnemyAI
         {
             if (gameObject.CompareTag("Boss"))
             {
-                gm.TranslateScore(value);
-                gm.UseEffect("Boom", gameObject.transform.position, 0.25f);
+                gm.UseEffect("Boom", gameObject.transform.position);
                 gm.DestroyEnemyAircraft(gameObject, true);
                 gm.ClearGame();
             }

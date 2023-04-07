@@ -62,6 +62,7 @@ Transform:
   m_Children:
   - {fileID: 8742849095046567562}
   - {fileID: 2410552099571426456}
+  - {fileID: 762690709619415019}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -114,8 +115,44 @@ MonoBehaviour:
   playerWaitPos: {x: 0, y: -7}
   bossInitPos: {x: 0, y: 3}
   bossWaitPos: {x: 0, y: 7}
-  explosion: {fileID: 5771024279119835771, guid: aeddbc893d21fab4ab65f1f25d973e7f, type: 3}
-  boom: {fileID: 1605294008108703895, guid: 016b5958e71ab594aa5b03fb86338c12, type: 3}
+  effects:
+  - {fileID: 1605294008108703895, guid: 016b5958e71ab594aa5b03fb86338c12, type: 3}
+  - {fileID: 5771024279119835771, guid: aeddbc893d21fab4ab65f1f25d973e7f, type: 3}
+  EffectPoolTransform: {fileID: 762690709619415019}
+  items:
+  - {fileID: 4107547577823953446, guid: 2d77f506277240f49a34bf29b990e498, type: 3}
+  - {fileID: 721502015444393766, guid: 96777b405a6ddcf43987d1c2e8698f21, type: 3}
+--- !u!1 &3204932871682706655
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 762690709619415019}
+  m_Layer: 0
+  m_Name: Effects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &762690709619415019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3204932871682706655}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4961042992832633754}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8918998674840808155
 GameObject:
   m_ObjectHideFlags: 0
