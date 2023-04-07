@@ -59,14 +59,8 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    private void OnDestroy()
+    protected override void Awake()
     {
-        Debug.Log("GM OnDestroy");
-    }
-
-    public override void Awake()
-    {
-        Debug.Log("GM Awake");
         base.Awake();
         int bCount = bulletTypes.Count;
         for (int i = 0; i < bCount; i++)
@@ -271,7 +265,6 @@ public class GameManager : Singleton<GameManager>
             string effectName = $"Effect {name}";
             if (effects[i].name.Equals(effectName))
             {
-                //GameObject target = Instantiate(effects[i], pos, Quaternion.identity);
                 GameObject target = GetObjectPool(effectName);
                 target.transform.SetPositionAndRotation(pos, Quaternion.identity);
                 StartCoroutine(WaitDelay(target, time));
@@ -304,35 +297,32 @@ public class GameManager : Singleton<GameManager>
         int count = items.Count;
         for (int i = 0; i < count; i++)
         {
-            if (name.Contains(items[i].name))
+            if (!items[i].name.Contains(name))
+                continue;
+
+            switch (items[i].name)
             {
-                switch (items[i].name)
-                {
-                    case "Item Boom":
-                        UseEffect("Boom", Vector2.zero, 0.5f);
-                        float boomDamage = 500f;
-                        List<Aircraft> liveAircrafts = new ();
-                        foreach (var aircraft in liveEnemyAircrafts)
-                        {
-                            if (aircraft.TryGetComponent<Aircraft>(out var thisAC))
-                                liveAircrafts.Add(thisAC);
-                        }
-                        foreach (var aircraft in liveAircrafts)
-                        {
-                            aircraft.GetDamage(boomDamage);
-                        }
-                        if (boss != null)
-                            boss.GetComponent<Aircraft>().GetDamage(boomDamage);
-                        break;
-                    case "Item Power":
-                        Aircraft playerAircraft = player.GetComponent<PlayerAircraft>();
-                        float repairAmount = playerAircraft.healthPoint * 0.1f;
-                        playerAircraft.Repair(repairAmount);
-                        break;
-                    default:
-                        break;
-                }
-                break;
+                case "Item Boom":
+                    UseEffect("Boom", Vector2.zero, 0.5f);
+                    float boomDamage = 500f;
+                    List<Aircraft> liveAircrafts = new();
+                    foreach (var aircraft in liveEnemyAircrafts)
+                    {
+                        if (aircraft.TryGetComponent<Aircraft>(out var thisAC))
+                            liveAircrafts.Add(thisAC);
+                    }
+                    if (boss != null)
+                        liveAircrafts.Add(boss.GetComponent<Aircraft>());
+                    foreach (var aircraft in liveAircrafts)
+                        aircraft.GetDamage(boomDamage);
+                    break;
+                case "Item Power":
+                    Aircraft playerAircraft = player.GetComponent<PlayerAircraft>();
+                    float repairAmount = playerAircraft.healthPoint * 0.1f;
+                    playerAircraft.Repair(repairAmount);
+                    break;
+                default:
+                    break;
             }
         }
     }
