@@ -26,25 +26,17 @@ public class CustomObjectPool : Object
     public GameObject GetObject()
     {
         GameObject target;
-        if (Count < limit)
+        if (unuseQueue.Count == 0)
         {
             target = Instantiate(spawnPrefab, spawnTransform);
             target.name = spawnPrefab.name;
         }
         else
         {
-            if (unuseQueue.Count == 0)
-            {
-                target = Instantiate(spawnPrefab, spawnTransform);
-                target.name = spawnPrefab.name;
-            }
-            else
-            {
-                target = unuseQueue[0];
-                unuseQueue.Remove(target);
-                if (target != null)
-                    target.SetActive(true);
-            }
+            target = unuseQueue[0];
+            unuseQueue.Remove(target);
+            if (target != null)
+                target.SetActive(true);
         }
         useQueue.Add(target);
         return target;

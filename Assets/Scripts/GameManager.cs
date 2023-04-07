@@ -4,8 +4,6 @@ using System.IO;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
 
 public class GameManager : Singleton<GameManager>
 {
