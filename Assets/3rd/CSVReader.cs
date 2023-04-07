@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -10,14 +9,6 @@ public class CSVReader
     static readonly string LINE_SPLIT_RE = @"\r\n|\n\r|\n|\r";
     static readonly char[] TRIM_CHARS = { '\"' };
 
-    // New1. Use File Path
-    public static List<Dictionary<string, object>> ReadByPath(string path, bool splitComma = true)
-    {
-        string str = File.ReadAllText(path);
-        return SplitTokens(str, splitComma);
-    }
-
-    // Legacy. Use Resource folder
     public static List<Dictionary<string, object>> Read(string file, bool splitComma = true)
     {
         TextAsset data = Resources.Load(file) as TextAsset;

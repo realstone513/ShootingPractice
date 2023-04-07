@@ -10,13 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63a582f9118ac4e45ad09f79eb23cb72, type: 3}
-  m_Name: EnemyCWeapon
+  m_Name: Player Main Weapon
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 9062767806321961784, guid: dd491fb9aa93ee74a971dd01655aaa5b, type: 3}
-  reloadDelay: 2
-  damage: 10
-  bulletSpeed: 4.5
-  magazineSize: 3
-  fireRate: 0.2
-  shootDirection: {x: 0, y: -1}
-  isGuidedMissile: 0
+  bulletPrefab: {fileID: 5695295906973642355, guid: 89e3a98d91db3d743af78f6bf4936c9a, type: 3}
+  reloadDelay: 2.5
+  damage: 200
+  bulletSpeed: 9
+  shootDirection: {x: 0, y: 1}

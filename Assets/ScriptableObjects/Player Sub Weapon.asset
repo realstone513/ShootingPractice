@@ -10,13 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63a582f9118ac4e45ad09f79eb23cb72, type: 3}
-  m_Name: BossASubWeapon
+  m_Name: Player Sub Weapon
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 5336752889520580862, guid: 951b124555318c34fb3da69524f83c31, type: 3}
-  reloadDelay: 5
-  damage: 10
-  bulletSpeed: 5
-  magazineSize: 3
-  fireRate: 0.2
-  shootDirection: {x: 0, y: -1}
-  isGuidedMissile: 1
+  bulletPrefab: {fileID: 7200302961479144051, guid: 298644d08af1cb84093baadc6afa03a5, type: 3}
+  reloadDelay: 0.15
+  damage: 20
+  bulletSpeed: 12
+  shootDirection: {x: 0, y: 1}

@@ -59,8 +59,14 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    private void OnDestroy()
+    {
+        Debug.Log("GM OnDestroy");
+    }
+
     public override void Awake()
     {
+        Debug.Log("GM Awake");
         base.Awake();
         int bCount = bulletTypes.Count;
         for (int i = 0; i < bCount; i++)
